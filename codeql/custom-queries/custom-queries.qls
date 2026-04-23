@@ -2,4 +2,6 @@
 # You can progressively add your own rules here
 
 - description: "Custom security queries"
-- queries: .
+
+- queries: ./js
+- queries: ./java
