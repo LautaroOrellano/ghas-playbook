@@ -1,0 +1,38 @@
+# CodeQL configuration file
+# This file centralizes query selection, filters, and analysis scope
+
+name: "Enterprise CodeQL Config"
+
+# Use GitHub default queries + extended security + quality rules
+queries:
+  - uses: security-extended
+  - uses: security-and-quality
+
+  # Custom queries defined in this repository
+  - uses: ./codeql/custom-queries
+
+# Paths to include/exclude from analysis
+paths-ignore:
+  - node_modules
+  - dist
+  - build
+  - coverage
+  - "*.min.js"
+
+# Optional: restrict analysis to specific directories
+# paths:
+#   - src
+#   - backend
+#   - frontend
+
+# Query filters allow tuning noise level
+query-filters:
+  # Exclude low-severity alerts to reduce noise in large repos
+  - exclude:
+      severity:
+        - recommendation
+        - warning
+
+# Advanced: you can fine-tune packs or disable specific queries later
+# packs:
+#   - codeql/javascript-queries
