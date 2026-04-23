@@ -1,0 +1,5 @@
+# Custom query suite
+# You can progressively add your own rules here
+
+- description: "Custom security queries"
+- queries: .
