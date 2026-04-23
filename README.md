@@ -1,26 +1,20 @@
-# GHAS Playbook
+# GHAS Playbook 🛡️
 
-Practical, opinionated guides to implement GitHub Advanced Security (GHAS) in real projects.
+Practical, opinionated guides to implement GitHub Advanced Security (GHAS) and CodeQL in real projects. No fluff, just execution.
 
-## Why this repo exists
+![GitHub Advanced Security](https://img.shields.io/badge/GitHub-Advanced_Security-blue?logo=github)
+![CodeQL](https://img.shields.io/badge/CodeQL-Ready-success)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-Official documentation from GitHub is:
-- fragmented
-- too theoretical
-- hard to apply in real CI/CD pipelines
-
-This repo focuses on:
-- real setups
-- copy-paste templates
-- troubleshooting from real-world usage
+---
 
 ## Quickstart (Code Scanning in 10 minutes)
 
-Get CodeQL running in minutes.
+Get CodeQL running in minutes. Skip the theory, see the results.
 
-1. Enable GHAS in your repo
+1. Enable **GitHub Advanced Security** in your repo settings.
 2. Create `.github/workflows/codeql.yml`
-3. Paste this:
+3. Paste this ready-to-use template:
 
 ```yaml
 name: "CodeQL"
@@ -53,36 +47,52 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 ```
-4. Push to main
-5. Go to: Security → Code Scanning alerts
+4. Push to `main`.
+5. Go to: **Security → Code Scanning alerts** to see your vulnerabilities.
 
-### What you'll find here
+---
 
-- Setup guides
-- Production-ready templates
-- Common pitfalls
-- Real troubleshooting
+## Why this repo exists
 
-## Custom Queries (Advanced)
+Official documentation from GitHub is great but often too theoretical and hard to apply directly in real CI/CD pipelines. 
 
-This repository includes real custom CodeQL queries:
+This playbook focuses on:
+- **Real setups** that work in enterprise environments.
+- **Copy-paste templates** to save hours of debugging.
+- **Real-world troubleshooting** for when things break.
 
-- Hardcoded secrets detection
-- Insecure eval usage
-- Basic SQL injection patterns
+---
 
-These are examples of how to extend GitHub Advanced Security beyond default rules.
+## The Playground (Try it instantly)
 
-### Try it instantly
+Don't believe it works? Try it yourself:
 
-Clone this repo and enable GitHub Advanced Security.
-The workflow is already configured and ready to run.
+1. **Fork** this repository.
+2. Make sure GHAS is enabled in your fork.
+3. Check the **Security** tab. CodeQL will automatically scan the `playground-app/` folder and find:
+   - 🚨 SQL Injections
+   - 🚨 Insecure `eval()` usage
+   - 🚨 Hardcoded Secrets
 
-### Roadmap
+*The `playground-app` contains realistic vulnerable code simulating a junior dev in a rush. Perfect for testing custom queries.*
 
-- [x] Code Scanning 
-- [ ] Secret Scanning
-- [ ] Dependency Review
-- [ ] CI/CD integrations
+---
 
+## Documentation & Guides
 
+Dive deeper when you need more than the quickstart:
+
+- 📖 [Implementation Guide](docs/implementation.md) - Best practices and how to tune the analysis.
+- 🔧 [Troubleshooting](docs/troubleshooting.md) - Fixes for "Autobuild fails", "No results found", etc.
+- 🕵️ [Custom Queries](docs/custom-queries.md) - How to write and use custom CodeQL rules.
+- 📋 [Templates](/templates) - Advanced and Java-specific workflow templates.
+
+---
+
+## Roadmap
+
+- [x] Code Scanning implementation guides
+- [x] Custom Queries examples
+- [ ] Secret Scanning deep dive
+- [ ] Dependency Review setup
+- [ ] CI/CD enterprise integrations

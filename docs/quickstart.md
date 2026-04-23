@@ -60,6 +60,6 @@ If you need more control, move to the advanced setup provided in this repository
 
 ## Next Steps
 
-* Explore the `code-scanning/` guides for deeper explanations
-* Check `codeql/` for custom queries
+* Explore the [Implementation Guide](implementation.md) for deeper explanations
+* Check [Custom Queries](custom-queries.md) for advanced CodeQL usage
 * Upgrade to the full enterprise workflow when needed
