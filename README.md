@@ -50,3 +50,20 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
+```
+4. Push to main
+5. Check Security tab → Code Scanning alerts
+
+### What you'll find here
+
+- Setup guides
+- Production-ready templates
+- Common pitfalls
+- Real troubleshooting
+
+### Roadmap
+
+- [x] Code Scanning 
+- [ ] Secret Scanning
+- [ ] Dependency Review
+- [ ] CI/CD integrations
