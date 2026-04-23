@@ -67,3 +67,8 @@ jobs:
 - [ ] Secret Scanning
 - [ ] Dependency Review
 - [ ] CI/CD integrations
+
+### Try it instantly
+
+Clone this repo and enable GitHub Advanced Security.
+The workflow is already configured and ready to run.
