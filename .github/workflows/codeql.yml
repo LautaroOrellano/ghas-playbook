@@ -1,0 +1,59 @@
+name: "CodeQL Advanced"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+  schedule:
+    # Runs every Monday at 03:00 UTC
+    - cron: '0 3 * * 1'
+
+jobs:
+  analyze:
+    name: CodeQL Analysis (Multi-language)
+    runs-on: ubuntu-latest
+
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # Add/remove languages depending on your stack
+        language: [ 'javascript', 'java' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      # Initialize CodeQL with external config
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql/codeql-config.yml
+
+      # NOTE:
+      # Autobuild works for simple projects.
+      # For enterprise setups (especially Java), replace this with a custom build step.
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      # Example for manual Java build (uncomment if needed)
+      # - name: Build (Java)
+      #   run: mvn clean install -DskipTests
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
+          output: sarif-results
+
+      # Upload SARIF results as artifact for auditing or external integrations
+      - name: Upload SARIF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-sarif-${{ matrix.language }}
+          path: sarif-results
