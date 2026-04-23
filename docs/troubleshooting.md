@@ -1,131 +1,110 @@
 # Troubleshooting CodeQL
 
-## No results found
+If CodeQL fails or doesn't behave as expected, find your issue below.
 
-Possible causes:
-- repo too small
-- wrong language detected
-
-Fix:
-- explicitly set language in config
+> [!TIP]
+> Always check the **Actions tab** logs first. The `Perform CodeQL Analysis` step usually tells you exactly what went wrong.
 
 ---
 
-## Autobuild fails
+<details>
+<summary><b>🚨 No results found</b></summary>
 
-Common in:
-- Java (missing dependencies)
-- monorepos
+**Causes:** Repo is too small, or the wrong language was detected.  
+**Fix:** Explicitly define the language in your workflow `init` step instead of relying on auto-detect.
+</details>
 
-Fix:
-- replace autobuild with custom build step
+<details>
+<summary><b>🚨 Autobuild fails (Very common in Java/C#)</b></summary>
 
----
+**Causes:** Missing dependencies, complex monorepos, or custom build scripts.  
+**Fix:** Replace the `autobuild` action with your actual build command.
+```yaml
+- name: Build with Maven
+  run: mvn -B clean install -DskipTests
+```
+</details>
 
-## Workflow not triggering
+<details>
+<summary><b>🚨 Workflow not triggering</b></summary>
 
-Possible causes:
-- wrong branch name
-- workflow not in `.github/workflows/`
+**Causes:** Wrong branch name, or workflow not in `.github/workflows/`.  
+**Fix:** Verify branch filters in the `on:` section and ensure file location is correct.
+</details>
 
-Fix:
-- verify branch filters and file location
+<details>
+<summary><b>🚨 CodeQL not detecting correct language</b></summary>
 
----
+**Causes:** Mixed repository (multiple languages) or missing language in config.  
+**Fix:** Define languages explicitly in the `init` step.
+</details>
 
-## CodeQL not detecting correct language
+<details>
+<summary><b>🚨 Too many false positives or noise</b></summary>
 
-Possible causes:
-- mixed repository (multiple languages)
-- missing language in config
+**Causes:** Using the `security-and-quality` suite which includes linting rules, or scanning test files.  
+**Fix:**
+1. Switch to `security-extended` queries.
+2. Use a `codeql-config.yml` to exclude test folders and `node_modules`.
+</details>
 
-Fix:
-- define languages explicitly in `init` step
+<details>
+<summary><b>🚨 Scan takes too long</b></summary>
 
----
+**Causes:** Large repository or scanning generated code.  
+**Fix:** Exclude paths like `node_modules`, `dist`, `build`, and `coverage` in your `codeql-config.yml`.
+</details>
 
-## Too many false positives
+<details>
+<summary><b>🚨 SARIF not generated</b></summary>
 
-Possible causes:
-- broad query set
-- low severity alerts included
+**Causes:** Analysis step failed or wrong output configuration.  
+**Fix:** Check the `analyze` step logs for underlying errors.
+</details>
 
-Fix:
-- use query filters or reduce query set
+<details>
+<summary><b>🚨 Permission denied (security-events)</b></summary>
 
----
-
-## Scan takes too long
-
-Possible causes:
-- large repository
-- unnecessary paths included
-
-Fix:
-- exclude paths like `node_modules`, `dist`, `build`
-
----
-
-## SARIF not generated
-
-Possible causes:
-- analysis step failed
-- wrong output configuration
-
-Fix:
-- check `analyze` step and logs
-
----
-
-## Permission denied (security-events)
-
-Possible causes:
-- missing workflow permissions
-
-Fix:
-- add:
+**Causes:** Missing `GITHUB_TOKEN` permissions in the workflow.  
+**Fix:** Ensure your job has these exact permissions:
+```yaml
+permissions:
   security-events: write
+  contents: read
+```
+</details>
 
----
+<details>
+<summary><b>🚨 PR scan not running</b></summary>
 
-## PR scan not running
+**Causes:** Missing `pull_request` trigger or restricted permissions.  
+**Fix:** Add `pull_request:` in your workflow `on:` triggers.
+</details>
 
-Possible causes:
-- missing `pull_request` trigger
-- restricted permissions
+<details>
+<summary><b>🚨 Alerts not appearing in Security tab</b></summary>
 
-Fix:
-- add `pull_request` in workflow triggers
+**Causes:** GHAS not enabled or analysis not completed.  
+**Fix:** Enable GHAS in repo settings and verify the workflow ran successfully.
+</details>
 
----
+<details>
+<summary><b>🚨 CodeQL not running in private repositories</b></summary>
 
-## Alerts not appearing in Security tab
+**Causes:** 
+- GitHub Advanced Security (GHAS) not enabled for the repository.
+- Organization does not have GHAS license.
+- Feature not enabled at organization level.
 
-Possible causes:
-- GHAS not enabled
-- analysis not completed
+**Fix:** 
+1. Enable GHAS in repository settings.
+2. Verify organization has a GHAS license.
+3. Ask organization admin to enable security features.
+</details>
 
-Fix:
-- enable GHAS and verify workflow success
+<details>
+<summary><b>🚨 Security tab not visible</b></summary>
 
-## CodeQL not running in private repositories
-
-Possible causes:
-- GitHub Advanced Security (GHAS) not enabled for the repository
-- Organization does not have GHAS license
-- Feature not enabled at organization level
-
-Fix:
-- enable GHAS in repository settings
-- verify organization has GHAS license
-- ask organization admin to enable security features
-
-## Security tab not visible
-
-Possible causes:
-- GHAS not enabled
-- insufficient permissions
-
-Fix:
-- enable GHAS
-- check repository access level
+**Causes:** GHAS not enabled or insufficient repository permissions.  
+**Fix:** Enable GHAS and check your repository access level.
+</details>

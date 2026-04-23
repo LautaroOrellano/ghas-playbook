@@ -1,65 +1,23 @@
-# Templates
+# Templates Guide
 
-This folder contains ready-to-use CodeQL workflow templates for different levels of complexity.
+This folder contains ready-to-use CodeQL workflow templates. The goal is simple: **get GHAS running in minutes, not hours.**
 
-The goal is simple: **get GitHub Advanced Security running in minutes**, not hours.
+> [!IMPORTANT]
+> If you just want to get started fast, use `codeql.yml`.
 
----
+## Which template should I use?
 
-## Available Templates
-
-### 1. Quickstart (`codeql.yml`)
-
-**Best for:**
-
-* Small projects
-* First-time users
-* Fast setup with minimal configuration
-
-**Features:**
-
-* Single language (JavaScript by default)
-* Uses built-in queries (`security-extended`)
-* Works out of the box with autobuild
-
-**How to use:**
-
-1. Copy the file to your repository:
-
-   ```
-   .github/workflows/codeql.yml
-   ```
-2. Commit and push
-3. Go to the **Security → Code scanning** tab to see results
-
----
-
-### 2. When should I use something more advanced?
-
-Use the full setup from this repository (`.github/workflows/codeql.yml`) if:
-
-* You have a **monorepo**
-* You use **multiple languages**
-* You need **custom queries**
-* You want **scheduled scans**
-* You require **SARIF exports for auditing**
-
----
+| Template | Best For | Features |
+| :--- | :--- | :--- |
+| **[`codeql.yml`](../templates/codeql.yml)** | Small projects, JS/TS/Python | Single language, autobuild, default rules |
+| **[`codeql-java.yml`](../templates/codeql-java.yml)** | Java Projects | Custom Maven build step, avoids autobuild issues |
+| **[Advanced Workflow](../.github/workflows/codeql.yml)** | Enterprise, Monorepos | Matrix strategy, SARIF export, `codeql-config.yml` |
 
 ## Philosophy
 
 These templates are intentionally:
+* **Minimal** → no unnecessary complexity.
+* **Practical** → designed for real CI/CD usage.
+* **Copy-paste ready** → zero external dependencies.
 
-* **Minimal** → no unnecessary complexity
-* **Practical** → designed for real CI/CD usage
-* **Copy-paste ready** → no external dependencies
-
-If you need more control, move to the advanced setup provided in this repository.
-
----
-
-## Next Steps
-
-* Explore the [Implementation Guide](implementation.md) for deeper explanations
-* Check [Custom Queries](custom-queries.md) for advanced CodeQL usage
-* Upgrade to the full enterprise workflow when needed
+If you need more control (custom queries, path exclusions), move to the advanced setup provided in `.github/workflows/codeql.yml`.
