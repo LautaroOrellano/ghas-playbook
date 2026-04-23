@@ -54,6 +54,16 @@ jobs:
 4. Push to main
 5. Check Security tab → Code Scanning alerts
 
+## Custom Queries (Advanced)
+
+This repository includes real custom CodeQL queries:
+
+- Hardcoded secrets detection
+- Insecure eval usage
+- Basic SQL injection patterns
+
+These are examples of how to extend GitHub Advanced Security beyond default rules.
+
 ### What you'll find here
 
 - Setup guides
