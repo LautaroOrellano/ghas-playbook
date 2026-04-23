@@ -1,0 +1,46 @@
+name: "CodeQL Java"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  analyze:
+    name: CodeQL Analysis (Java)
+    runs-on: ubuntu-latest
+
+    permissions:
+      security-events: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up Java (adjust version if needed)
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      # Initialize CodeQL
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: java
+          queries: security-extended
+
+      # Build step (RECOMMENDED for Java projects)
+      # Autobuild often fails in real-world setups
+      - name: Build with Maven
+        run: mvn -B clean install -DskipTests
+
+      # Alternative for Gradle projects
+      # - name: Build with Gradle
+      #   run: ./gradlew build -x test
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
