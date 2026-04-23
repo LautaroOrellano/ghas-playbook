@@ -1,24 +1,33 @@
 # Custom CodeQL Queries
 
-This folder contains custom CodeQL queries to extend default GitHub security analysis.
+Default queries are powerful, but they can’t enforce *your* company's specific security policies. That's where custom queries come in.
 
-## Why custom queries?
+## What you can detect
 
-Default queries are good, but they:
-- may miss business-specific vulnerabilities
-- can’t enforce internal security policies
+- Hardcoded secrets specific to your infra.
+- Usage of deprecated internal APIs.
+- Business-logic anti-patterns.
 
-## What you can add here
+> [!TIP]
+> Check the `codeql/custom-queries/` folder in this repo for real, ready-to-use examples for Java and JavaScript.
 
-- Hardcoded secrets detection
-- Unsafe API usage
-- Company-specific anti-patterns
+---
 
-## Structure
+## Anatomy of a CodeQL Query
 
-- `.ql` → individual queries
-- `.qls` → query suites
+CodeQL is like SQL, but for code syntax trees. It follows a simple `from`, `where`, `select` structure.
 
-## Next steps
+Here is a 1-minute example of how it looks (finding `eval()` in JS):
 
-Add your first custom query and reference it in `custom-queries.qls`.
+```ql
+import javascript // 1. Import the language library
+
+from CallExpr call // 2. FROM: We are looking for a function call
+where call.getCalleeName() = "eval" // 3. WHERE: The function name is 'eval'
+select call, "Avoid using eval()!" // 4. SELECT: Return the finding and a message
+```
+
+## Structure in this Repo
+
+* **`.ql` files**: Individual queries (e.g., `hardcoded-secrets.ql`).
+* **`.qls` files**: Query suites. These group multiple `.ql` files together so you can run them all at once in your workflow.

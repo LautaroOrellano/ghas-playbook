@@ -1,164 +1,76 @@
 # Code Scanning Implementation Guide
 
-This guide shows how to implement CodeQL using GitHub Advanced Security in a real project.
+This guide shows how to implement CodeQL using GitHub Advanced Security in a real project. Focus is **practical setup**, not theory.
 
-The focus is **practical setup**, not theory.
-
----
-
-## Prerequisites
-
-Before starting, make sure:
-
-* GitHub Advanced Security is enabled in your repository
-* You have permissions to create workflows
-* Your default branch is `main` (or adjust accordingly)
+> [!IMPORTANT]
+> **Prerequisites:**
+> * GitHub Advanced Security enabled in your repository.
+> * Permissions to create workflows.
+> * Default branch is `main` (adjust accordingly if not).
 
 ---
 
-## Step 1 — Add the workflow
+## Step 1: Add the Workflow
 
-Choose one of the templates:
+Choose the right template for your project. Copy it into `.github/workflows/codeql.yml`, commit, and push.
 
-* Basic → `templates/codeql.yml`
-* Java projects → `templates/codeql-java.yml`
-* Advanced setup → `.github/workflows/codeql.yml`
-
-Copy the file into:
-
-```
-.github/workflows/codeql.yml
-```
-
-Commit and push.
+| Project Type | Template to use |
+| :--- | :--- |
+| **Simple / Single Language** | [`templates/codeql.yml`](../templates/codeql.yml) |
+| **Java / Compiled** | [`templates/codeql-java.yml`](../templates/codeql-java.yml) |
+| **Monorepo / Multi-language** | [`.github/workflows/codeql.yml`](../.github/workflows/codeql.yml) (Advanced) |
 
 ---
 
-## Step 2 — Trigger the scan
+## Step 2: Trigger the Scan
 
 CodeQL runs automatically on:
+* Pushes to the default branch.
+* Pull requests.
 
-* push to `main`
-* pull requests
-* scheduled scans (advanced setup)
-
-You can also trigger it manually by pushing a small change.
+> [!TIP]
+> To test it immediately without waiting for a real PR, just push a small empty commit or modify a README to trigger the Action.
 
 ---
 
-## Step 3 — Verify results
+## Step 3: Verify Results
 
-Go to:
+Go to **Repository → Security → Code scanning alerts**.
 
+You will see detected vulnerabilities, severity levels, and affected files. Each alert includes a description, exact code location, and remediation guidance.
+
+> [!WARNING]
+> Not all findings are critical vulnerabilities. CodeQL might flag "Security and Quality" issues that are low severity. Don't panic if you see a high number initially.
+
+---
+
+<details>
+<summary><b>Step 4: Tune the Analysis (Advanced)</b></summary>
+
+To reduce noise and improve accuracy, use a configuration file (`.github/codeql/codeql-config.yml`).
+
+* **Ignore test paths** (`node_modules`, `dist`, `tests`).
+* **Adjust query sets** (switch to `security-extended` or `security-and-quality`).
+
+*Example:*
+```yaml
+paths-ignore:
+  - 'tests'
+  - 'node_modules'
 ```
-Repository → Security → Code scanning alerts
-```
+</details>
 
-You should see:
+<details>
+<summary><b>Step 5: Use Custom Queries (Enterprise)</b></summary>
 
-* detected vulnerabilities
-* severity levels
-* affected files
-
----
-
-## Step 4 — Understand results
-
-Each alert includes:
-
-* description of the issue
-* severity (low → critical)
-* code location
-* remediation guidance
-
-⚠️ Not all findings are real vulnerabilities. Some are false positives.
-
----
-
-## Step 5 — Tune the analysis (recommended)
-
-To reduce noise and improve accuracy:
-
-* ignore unnecessary paths (`node_modules`, `dist`, etc.)
-* adjust query sets (`security-extended`, `security-and-quality`)
-* introduce custom queries for your use case
-
-See:
-
-```
-.github/codeql/codeql-config.yml
-```
-
----
-
-## Step 6 — Use custom queries (advanced)
-
-This repository includes example queries in:
-
-```
-/codeql/custom-queries/
-```
-
-You can:
-
-* extend detection capabilities
-* enforce internal security rules
-* experiment with CodeQL
-
----
-
-## Common Issues
-
-### Autobuild fails
-
-Common in:
-
-* Java
-* monorepos
-
-Solution:
-
-* replace autobuild with a manual build step (Maven/Gradle)
-
----
-
-### No results found
-
-Possible causes:
-
-* small codebase
-* incorrect language detection
-
-Solution:
-
-* explicitly define languages in the workflow
-
----
-
-### Too many alerts
-
-Cause:
-
-* overly broad query set
-
-Solution:
-
-* use query filters in `codeql-config.yml`
-* exclude low severity findings
+Need to enforce internal security rules? CodeQL lets you write custom rules.
+Check out `codeql/custom-queries/` in this repository for real examples.
+</details>
 
 ---
 
 ## Best Practices
 
-* Run scans on every pull request
-* Add scheduled scans for inactive code
-* Start simple, then move to advanced configuration
-* Review alerts regularly (don’t ignore them)
-
----
-
-## Next Steps
-
-* Customize queries for your domain
-* Integrate results into your CI/CD pipeline
-
+* **Run scans on every pull request** to catch issues before they merge.
+* **Review alerts regularly.** Don’t let them pile up.
+* **Start simple**, then move to advanced configuration as your codebase grows.
