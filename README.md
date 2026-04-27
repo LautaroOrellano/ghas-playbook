@@ -70,9 +70,9 @@ Don't believe it works? Try it yourself:
 1. **Fork** this repository.
 2. Make sure GHAS is enabled in your fork.
 3. Check the **Security** tab. CodeQL will automatically scan the `playground-app/` folder and find:
-   - 🚨 SQL Injections
-   - 🚨 Insecure `eval()` usage
-   - 🚨 Hardcoded Secrets
+   -  SQL Injections
+   -  Insecure `eval()` usage
+   -  Hardcoded Secrets
 
 *The `playground-app` contains realistic vulnerable code simulating a junior dev in a rush. Perfect for testing custom queries.*
 
@@ -82,10 +82,10 @@ Don't believe it works? Try it yourself:
 
 Dive deeper when you need more than the quickstart:
 
-- 📖 [Implementation Guide](docs/implementation.md) - Best practices and how to tune the analysis.
-- 🔧 [Troubleshooting](docs/troubleshooting.md) - Fixes for "Autobuild fails", "No results found", etc.
-- 🕵️ [Custom Queries](docs/custom-queries.md) - How to write and use custom CodeQL rules.
-- 📋 [Templates](/templates) - Advanced and Java-specific workflow templates.
+-  [Implementation Guide](docs/implementation.md) - Best practices and how to tune the analysis.
+-  [Troubleshooting](docs/troubleshooting.md) - Fixes for "Autobuild fails", "No results found", etc.
+-  [Custom Queries](docs/custom-queries.md) - How to write and use custom CodeQL rules.
+-  [Templates](/templates) - Advanced and Java-specific workflow templates.
 
 ---
 
